@@ -3,7 +3,9 @@ import 'package:intl/intl.dart';
 import 'package:expense_tracker_project/models/expense.dart';
 
 class NewExpense extends StatefulWidget {
-  const NewExpense({super.key});
+  const NewExpense({required this.addExpense, super.key});
+  final void Function(Expense newExpense) addExpense;
+
   @override
   State<NewExpense> createState() {
     return _NewExpenseState();
@@ -21,25 +23,59 @@ class _NewExpenseState extends State<NewExpense> {
     super.dispose();
   }
 
+  void _submitExpenseData() {
+    final enterdAmount = double.tryParse(_enteredAmountController.text);
+    final inValidAmount = enterdAmount == null;
+    if (inValidAmount ||
+        _enteredController.text.trim().isEmpty ||
+        _selectedDate == null) {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('invaled data'),
+          content: Text('some of the data are missing or invaid'),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+              },
+              child: Text('Okay'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+    widget.addExpense(
+      Expense(
+        amount: enterdAmount,
+        date: _selectedDate!,
+        title: _enteredController.text,
+        category: _selectedCategory,
+      ),
+    );
+    Navigator.pop(context);
+  }
+
   Category _selectedCategory = Category.food;
-  DateTime? selectedDate;
+  DateTime? _selectedDate;
+  void datePecker() async {
+    final now = DateTime.now();
+    final fisrt = DateTime(now.year - 1, now.month, now.day);
+    final datePeck = await showDatePicker(
+      context: context,
+      firstDate: fisrt,
+      lastDate: now,
+    );
+    setState(() {
+      _selectedDate = datePeck;
+    });
+  }
+
   @override
   Widget build(context) {
-    void datePecker() async {
-      final now = DateTime.now();
-      final fisrt = DateTime(now.year - 1, now.month, now.day);
-      final datePeck = await showDatePicker(
-        context: context,
-        firstDate: fisrt,
-        lastDate: now,
-      );
-      setState(() {
-        selectedDate = datePeck;
-      });
-    }
-
     return Padding(
-      padding: const EdgeInsets.all(30),
+      padding: const EdgeInsets.fromLTRB(25, 40, 25, 25),
       child: Column(
         children: [
           TextField(
@@ -65,9 +101,9 @@ class _NewExpenseState extends State<NewExpense> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    selectedDate == null
+                    _selectedDate == null
                         ? "no date "
-                        : formatter.format(selectedDate!),
+                        : formatter.format(_selectedDate!),
                   ),
                   IconButton(
                     onPressed: datePecker,
@@ -99,13 +135,12 @@ class _NewExpenseState extends State<NewExpense> {
                   });
                 },
               ),
+              SizedBox(width: 10),
               ElevatedButton(
-                onPressed: () {
-                  print(selectedDate);
-                },
+                onPressed: _submitExpenseData,
                 child: const Text('save expense'),
               ),
-              SizedBox(width: 20),
+              SizedBox(width: 10),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);

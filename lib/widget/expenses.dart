@@ -1,6 +1,5 @@
 import 'package:expense_tracker_project/widget/expenses_list/expenses_list.dart';
 import 'package:expense_tracker_project/widget/new_expense.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_tracker_project/models/expense.dart';
 
@@ -13,23 +12,26 @@ class Expenses extends StatefulWidget {
 }
 
 class _ExpensesState extends State<Expenses> {
-  final List<Expense> _regestredExpenses = [
-    Expense(
-      title: 'buying food',
-      amount: 10,
-      category: Category.food,
-      date: DateTime.now(),
-    ),
-    Expense(
-      title: 'go to uni',
-      amount: 4,
-      category: Category.transfer,
-      date: DateTime.now(),
-    ),
-  ];
+  void _addExpense(newExpense) {
+    setState(() {
+      regestredExpenses.add(newExpense);
+    });
+  }
+
+  void _deleteExpense(newExpense) {
+    setState(() {
+      regestredExpenses.remove(newExpense);
+    });
+  }
+
+  final List<Expense> regestredExpenses = [];
 
   void _openAddExpense() {
-    showModalBottomSheet(context: context, builder: (ctx) => NewExpense());
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (ctx) => NewExpense(addExpense: _addExpense),
+    );
   }
 
   @override
@@ -44,7 +46,12 @@ class _ExpensesState extends State<Expenses> {
       body: Column(
         children: [
           Text('chart'),
-          Expanded(child: ExpensesList(expenses: _regestredExpenses)),
+          Expanded(
+            child: ExpensesList(
+              expenses: regestredExpenses,
+              deletedExpense: _deleteExpense,
+            ),
+          ),
         ],
       ),
     );
