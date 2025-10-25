@@ -19,9 +19,25 @@ class _ExpensesState extends State<Expenses> {
   }
 
   void _deleteExpense(newExpense) {
+    var index = regestredExpenses.indexOf(newExpense);
     setState(() {
       regestredExpenses.remove(newExpense);
     });
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 3),
+        content: const Text('expense dleted'),
+        action: SnackBarAction(
+          label: 'undo',
+          onPressed: () {
+            setState(() {
+              regestredExpenses.insert(index, newExpense);
+            });
+          },
+        ),
+      ),
+    );
   }
 
   final List<Expense> regestredExpenses = [];
@@ -36,6 +52,18 @@ class _ExpensesState extends State<Expenses> {
 
   @override
   Widget build(context) {
+    Widget content = Expanded(
+      child: const Center(child: Text('no expenses yet ')),
+    );
+    if (regestredExpenses.isNotEmpty) {
+      content = Expanded(
+        child: ExpensesList(
+          expenses: regestredExpenses,
+          deletedExpense: _deleteExpense,
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('My Life Expenses'),
@@ -43,17 +71,7 @@ class _ExpensesState extends State<Expenses> {
           IconButton(onPressed: _openAddExpense, icon: Icon(Icons.add)),
         ],
       ),
-      body: Column(
-        children: [
-          Text('chart'),
-          Expanded(
-            child: ExpensesList(
-              expenses: regestredExpenses,
-              deletedExpense: _deleteExpense,
-            ),
-          ),
-        ],
-      ),
+      body: Column(children: [Text('chart'), content]),
     );
   }
 }
