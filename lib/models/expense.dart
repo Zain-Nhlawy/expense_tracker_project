@@ -29,7 +29,28 @@ class Expense {
   final String id;
   final Category category;
 
-  String get formattedDate{
-return formatter.format(date);
+  String get formattedDate {
+    return formatter.format(date);
+  }
+}
+
+class ExpenseBucket {
+  ExpenseBucket({required this.category, required this.expenses});
+
+  ExpenseBucket.forCategory(List<Expense> thisExpenses, this.category)
+    : expenses = thisExpenses
+          .where((expense) => expense.category == category)
+          .toList();
+
+  final List<Expense> expenses;
+  final Category category;
+
+  double sum = 0;
+
+  double get totalExpense {
+    for (final expense in expenses) {
+      sum += expense.amount;
+    }
+    return sum;
   }
 }

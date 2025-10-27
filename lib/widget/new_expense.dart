@@ -79,6 +79,9 @@ class _NewExpenseState extends State<NewExpense> {
       child: Column(
         children: [
           TextField(
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
+            ),
             controller: _enteredController,
             maxLength: 50,
             decoration: InputDecoration(label: Text('title')),
@@ -87,6 +90,9 @@ class _NewExpenseState extends State<NewExpense> {
             children: [
               Expanded(
                 child: TextField(
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  ),
                   controller: _enteredAmountController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
@@ -104,6 +110,9 @@ class _NewExpenseState extends State<NewExpense> {
                     _selectedDate == null
                         ? "no date "
                         : formatter.format(_selectedDate!),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                   ),
                   IconButton(
                     onPressed: datePecker,
@@ -122,7 +131,12 @@ class _NewExpenseState extends State<NewExpense> {
                     .map(
                       (category) => DropdownMenuItem(
                         value: category,
-                        child: Text(category.name.toUpperCase()),
+                        child: Text(
+                          category.name.toUpperCase(),
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
                       ),
                     )
                     .toList(),
@@ -154,6 +168,3 @@ class _NewExpenseState extends State<NewExpense> {
     );
   }
 }
-
-
-

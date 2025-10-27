@@ -1,6 +1,6 @@
+import 'package:expense_tracker_project/drawer_screen.dart';
 import 'package:expense_tracker_project/widget/expenses.dart';
 import 'package:flutter/material.dart';
-import 'drawer_screen.dart'; // 🔹 رح نضيفه بعد شوي
 
 var kColorSchem = ColorScheme.fromSeed(
   seedColor: const Color.fromARGB(255, 146, 102, 160),
@@ -10,10 +10,6 @@ var kDarkColorSchem = ColorScheme.fromSeed(
   brightness: Brightness.dark,
   seedColor: const Color.fromARGB(255, 196, 72, 165),
 );
-
-void main() {
-  runApp(const MyApp());
-}
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -83,13 +79,8 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Expense Tracker'),
-        ),
-        drawer: DrawerScreen(
-          isDark: _isDark,
-          onThemeChanged: _toggleTheme,
-        ),
+        appBar: AppBar(title: const Text('Expense Tracker')),
+        drawer: DrawerScreen(isDark: _isDark, onThemeChanged: _toggleTheme),
         body: const Expenses(),
       ),
     );

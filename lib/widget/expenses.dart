@@ -1,3 +1,4 @@
+import 'package:expense_tracker_project/widget/chart/chart.dart';
 import 'package:expense_tracker_project/widget/expenses_list/expenses_list.dart';
 import 'package:expense_tracker_project/widget/new_expense.dart';
 import 'package:flutter/material.dart';
@@ -40,12 +41,26 @@ class _ExpensesState extends State<Expenses> {
     );
   }
 
-  final List<Expense> regestredExpenses = [];
+  final List<Expense> regestredExpenses = [
+    Expense(
+      amount: 20,
+      date: DateTime.now(),
+      title: 'ppdfs',
+      category: Category.food,
+    ),
+    Expense(
+      amount: 20,
+      date: DateTime.now(),
+      title: 'ppdfs',
+      category: Category.food,
+    ),
+  ];
 
   void _openAddExpense() {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       builder: (ctx) => NewExpense(addExpense: _addExpense),
     );
   }
@@ -65,13 +80,17 @@ class _ExpensesState extends State<Expenses> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('My Life Expenses'),
-        actions: [
-          IconButton(onPressed: _openAddExpense, icon: Icon(Icons.add)),
+      body: Column(
+        children: [
+          Chart(expenses: regestredExpenses),
+          Flexible(child: content),
+          SizedBox(height: 25),
+          FloatingActionButton(
+            onPressed: _openAddExpense,
+            child: const Icon(Icons.add),
+          ),
         ],
       ),
-      body: Column(children: [Text('chart'), content]),
     );
   }
 }
