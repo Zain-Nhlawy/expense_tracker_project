@@ -1,6 +1,7 @@
 import 'package:expense_tracker_project/widget/expenses.dart';
 import 'package:flutter/material.dart';
-import 'drawer_screen.dart'; // 🔹 رح نضيفه بعد شوي
+import 'package:flutter/services.dart';
+import 'drawer_screen.dart';
 
 var kColorSchem = ColorScheme.fromSeed(
   seedColor: const Color.fromARGB(255, 146, 102, 160),
@@ -12,7 +13,12 @@ var kDarkColorSchem = ColorScheme.fromSeed(
 );
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((
+    fn,
+  ) {
+    runApp(const MyApp());
+  });
 }
 
 class MyApp extends StatefulWidget {
@@ -83,13 +89,8 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Expense Tracker'),
-        ),
-        drawer: DrawerScreen(
-          isDark: _isDark,
-          onThemeChanged: _toggleTheme,
-        ),
+        appBar: AppBar(title: const Text('Expense Tracker')),
+        drawer: DrawerScreen(isDark: _isDark, onThemeChanged: _toggleTheme),
         body: const Expenses(),
       ),
     );

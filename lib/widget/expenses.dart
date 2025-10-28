@@ -28,7 +28,7 @@ class _ExpensesState extends State<Expenses> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         duration: const Duration(seconds: 3),
-        content: const Text('expense dleted'),
+        content: const Text('expense deleted'),
         action: SnackBarAction(
           label: 'undo',
           onPressed: () {
@@ -83,7 +83,7 @@ class _ExpensesState extends State<Expenses> {
       body: Column(
         children: [
           Chart(expenses: regestredExpenses),
-          Flexible(child: content),
+          SizedBox(height: 420, child: content),
           SizedBox(height: 25),
           FloatingActionButton(
             onPressed: _openAddExpense,

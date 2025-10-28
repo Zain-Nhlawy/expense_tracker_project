@@ -84,7 +84,7 @@ class _NewExpenseState extends State<NewExpense> {
             ),
             controller: _enteredController,
             maxLength: 50,
-            decoration: InputDecoration(label: Text('title')),
+            decoration: const  InputDecoration(label: Text('title')),
           ),
           Row(
             children: [
@@ -95,15 +95,15 @@ class _NewExpenseState extends State<NewExpense> {
                   ),
                   controller: _enteredAmountController,
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     prefixText: '\$ ',
                     label: Text('amount'),
                   ),
                 ),
               ),
-              SizedBox(width: 50),
+             const SizedBox(width: 50),
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment:  MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
@@ -122,10 +122,11 @@ class _NewExpenseState extends State<NewExpense> {
               ),
             ],
           ),
-          SizedBox(height: 15),
+         const  SizedBox(height: 15),
+
           Row(
             children: [
-              DropdownButton(
+             DropdownButton(
                 value: _selectedCategory,
                 items: Category.values
                     .map(
@@ -149,12 +150,12 @@ class _NewExpenseState extends State<NewExpense> {
                   });
                 },
               ),
-              SizedBox(width: 10),
+
               ElevatedButton(
                 onPressed: _submitExpenseData,
                 child: const Text('save expense'),
               ),
-              SizedBox(width: 10),
+              SizedBox(width: 3),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
