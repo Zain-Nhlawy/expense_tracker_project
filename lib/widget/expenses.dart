@@ -58,6 +58,7 @@ class _ExpensesState extends State<Expenses> {
 
   void _openAddExpense() {
     showModalBottomSheet(
+      useSafeArea: true,
       isScrollControlled: true,
       context: context,
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -67,8 +68,9 @@ class _ExpensesState extends State<Expenses> {
 
   @override
   Widget build(context) {
-    Widget content = Expanded(
-      child: const Center(child: Text('no expenses yet ')),
+    final width = MediaQuery.of(context).size.width;
+    Widget content = const Expanded(
+      child: Center(child: Text('no expenses yet ')),
     );
     if (regestredExpenses.isNotEmpty) {
       content = Expanded(
@@ -80,17 +82,27 @@ class _ExpensesState extends State<Expenses> {
     }
 
     return Scaffold(
-      body: Column(
-        children: [
-          Chart(expenses: regestredExpenses),
-          SizedBox(height: 420, child: content),
-          SizedBox(height: 25),
-          FloatingActionButton(
-            onPressed: _openAddExpense,
-            child: const Icon(Icons.add),
-          ),
-        ],
-      ),
+      body: width < 600
+          ? Column(
+              children: [
+                Chart(expenses: regestredExpenses),
+                content,
+                FloatingActionButton(
+                  onPressed: _openAddExpense,
+                  child: const Icon(Icons.add),
+                ),
+              ],
+            )
+          : Row(
+              children: [
+                Expanded(child: Chart(expenses: regestredExpenses)),
+                content,
+                FloatingActionButton(
+                  onPressed: _openAddExpense,
+                  child: const Icon(Icons.add),
+                ),
+              ],
+            ),
     );
   }
 }
